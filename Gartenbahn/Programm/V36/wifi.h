@@ -7,8 +7,8 @@
   char pass[] = "";             // no AP password (open AP)
   //char pass[] = "1234567890";   // AP password
 #else
-  char ssid[] = "1234567890"; // your network SSID (name)
-  char pass[] = "1234567890";  // your network password
+  char ssid[] = "RabutzRobotics"; // your network SSID (name)
+  char pass[] = "31073851";  // your network password
   //char pass[] = "";  // your network is open
 #endif
 

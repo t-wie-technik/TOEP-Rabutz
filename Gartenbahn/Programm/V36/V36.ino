@@ -64,8 +64,8 @@ void setup() {
 void loop() {
   //WIFI
   UpdateWiFiHandler();
-
-if (digitalRead(tast_1) == LOW && tast_1_alt == HIGH){
+  
+/*if (digitalRead(tast_1) == LOW && tast_1_alt == HIGH){
     driveAction = driveAction - 1;
     tast_1_alt = LOW;
   }else if (digitalRead(tast_1) == HIGH && tast_1_alt == LOW){
@@ -77,7 +77,7 @@ if (digitalRead(tast_1) == LOW && tast_1_alt == HIGH){
     tast_2_alt = LOW;
   }else if (digitalRead(tast_2) == HIGH && tast_2_alt == LOW){
     tast_2_alt = HIGH;
-  }
+  }*/
 
 //Fahren
   switch (driveAction) {
@@ -118,8 +118,8 @@ if (digitalRead(tast_1) == LOW && tast_1_alt == HIGH){
     driveAction = 6;
   }
 
-//Licht Steuerung
-  lightControll();
+
+  
 
 //Sonstiges
   Serial.println(driveStorage);
@@ -144,6 +144,7 @@ void stop (){
 }
 
 void starting (){
+  lightControll();
   musicStart(speakerPin);
   for (int i = 0; i < spedSlow; i++){
     motorDriver(i);
@@ -234,7 +235,7 @@ void lightControll(){
 }
 
 //Infrarot Sensor
-void readSensor(){
+/*void readSensor(){
   switch (driveDir){
     case 0:
       if ()
@@ -242,7 +243,7 @@ void readSensor(){
     case 1:
     break;
   }
-}
+}*/
 
 //WIFI
 IPAddress eitech01(192,168,1,11);
