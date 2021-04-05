@@ -3,3 +3,16 @@ M1 = Rot2/Gelb
 M2 = Rot3/Grün
 M3 = Rot4
 M4 = Rot5
+
+
+Einführungsrunde: 
+    Knopf
+    alle Rot
+    Zeit 5 min
+    danach 5 Grün
+
+Start:
+    alle AUS
+    Zeit 10 sek
+    nach 5 ROT++ -> Alle AUS
+    Abbruch durch Kopf -> 4 Gelb
