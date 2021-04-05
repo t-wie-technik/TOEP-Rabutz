@@ -1,0 +1,5 @@
+S1 = Rot1
+M1 = Rot2/Gelb
+M2 = Rot3/Grün
+M3 = Rot4
+M4 = Rot5
