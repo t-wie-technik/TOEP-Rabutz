@@ -16,7 +16,7 @@ int   fahrbefelInput[]  = {15         ,25         ,18          ,19           ,20
 IPAddress  bahnIp[]     = {eitech09   ,eitech09   ,eitech09    ,eitech09 ,eitech09     ,eitech09      };
 
 int frequenzPin         = 37;
-int frequenz            = 200; //Hz
+int frequenz            = 400; //Hz
 
 void setup() {
   Serial.begin(9600);
@@ -35,7 +35,7 @@ void setup() {
     }
       
   //Frequenz
-    //tone(frequenzPin,frequenz);
+    tone(frequenzPin,frequenz);
 }
 
 void loop() {

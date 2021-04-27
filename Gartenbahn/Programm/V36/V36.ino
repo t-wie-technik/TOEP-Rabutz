@@ -1,15 +1,30 @@
 #include "wifi.h"
 #include "music.h"
+#include "sensor.h"
+
+//DEBUG (Serielermonitor)
+  /*0 = off
+    1 = all on
+    2 = Motordriver
+    3 = Sensoren
+    4 = light/dir
+    5 = driveaction
+  */
+#define debug 0
 //PIN Mode
   //Input 
   //J1=15 J2=25 J3=18 J4=19 J5=20 J6=21 J7=16
   #define dipSwitchPin A0  //Start Position
+  // Rechts schneller  Links langsamer
   #define slowFrontPin 16  //Sensor Front Links
   #define fastFrontPin 21  //Sensor Front Rechts
   #define slowBackPin 20   //Sensor Back  Links
   #define fastBackPin 19   //Sensor Back  Rechts
   //HIGH = nicht gedrückt / LOW = gedrückt
 
+#define freq 400
+#define freq_min 300
+#define freq_max 500
 #define zeit 200
 #define tast_1 20
 #define tast_2 21
@@ -104,6 +119,8 @@ void loop() {
     break;
   }
 
+
+
 //Fahrtenspeicher Begrenzer
   if (driveStorage < 0) {
     driveStorage = 0;
@@ -164,6 +181,8 @@ void stoping(){
 
 void slow(){
   motorDriver(spedSlow);
+  readSensorSlow();
+  readSensorFast();
 }
 
 void faster (){
@@ -186,6 +205,7 @@ void slower (){
 
 void fast (){
   motorDriver(spedFast);
+  readSensorSlow();
 }
 //<Driving
 
@@ -234,16 +254,6 @@ void lightControll(){
   }
 }
 
-//Infrarot Sensor
-/*void readSensor(){
-  switch (driveDir){
-    case 0:
-      if ()
-    break;
-    case 1:
-    break;
-  }
-}*/
 
 //WIFI
 IPAddress eitech01(192,168,1,11);
@@ -270,10 +280,12 @@ void Commands(String first,String second, String third, String forth, String fit
     driveAction = 0;
   }
   if (first == "start-pumpkraft"){
-    start(0);
+    driveAction = 1;
+    driveDir = 1;
   }
   if (first == "start-rennstrecke"){
-    start(1);
+    driveAction = 1;
+    driveDir = 0;
   }
 }
 
