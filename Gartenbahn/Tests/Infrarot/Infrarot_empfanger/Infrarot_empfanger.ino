@@ -15,7 +15,7 @@ Serial.begin(9600);
 }
 
 void loop(){
-    switch status{
+    switch (status){
     case 0:
       Serial.print("HL__")
       Serial.print(pulseIn(hintenLinks));

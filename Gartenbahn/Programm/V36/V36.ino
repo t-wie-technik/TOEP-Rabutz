@@ -232,13 +232,13 @@ void fast (){
 void readSensorSlow(){
     switch (driveDir){
         case 0:
-            if (readSensor(slowFrontPin) = true){
+            if (readSensor(slowFrontPin) == true){
                 driveAction - 1;
                 
-            
+            }
         break;
         case 1:
-            if (readSensor(slowBackPin) = true){
+            if (readSensor(slowBackPin) == true){
                 driveAction - 1;
                 
             }
@@ -249,13 +249,13 @@ void readSensorSlow(){
 void readSensorFast(){
     switch (driveDir){
         case 0:
-            if (readSensor(fastFrontPin) = true){
+            if (readSensor(fastFrontPin) == true){
                 driveAction + 1;
                 
             }
         break;
         case 1:
-            if (readSensor(fastBackPin) = true){
+            if (readSensor(fastBackPin) == true){
                 driveAction + 1;
                 
             }
@@ -301,5 +301,29 @@ void Commands(String first,String second, String third, String forth, String fit
   if (first == "start-rennstrecke"){
     start(0);
   }
+  
 }
 
+/*switch (debug) {
+    case 0: //off
+      
+      break;
+    case 1: //all on
+      
+      break;
+    case 2: //Motordriver
+      
+      break;
+    case 3: //Sensoren
+      
+      break;
+    case 4: //light/dir
+      
+      break;
+    case 5: //driveaction
+      
+      break;
+    case 6:
+      
+      break;
+}*/
