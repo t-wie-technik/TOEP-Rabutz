@@ -1,6 +1,5 @@
 #include "wifi.h"
 #include "music.h"
-#include "sensor.h"
 
 //DEBUG (Serielermonitor)
   /*0 = off
@@ -10,7 +9,7 @@
     4 = light/dir
     5 = driveaction
   */
-#define debug 0
+  #define debug 0
 //PIN Mode
   //Input 
   //J1=15 J2=25 J3=18 J4=19 J5=20 J6=21 J7=16
@@ -77,23 +76,9 @@ void setup() {
 }
 
 void loop() {
-  //WIFI
+//WIFI
   UpdateWiFiHandler();
   
-/*if (digitalRead(tast_1) == LOW && tast_1_alt == HIGH){
-    driveAction = driveAction - 1;
-    tast_1_alt = LOW;
-  }else if (digitalRead(tast_1) == HIGH && tast_1_alt == LOW){
-    tast_1_alt = HIGH;
-  }
-
-  if (digitalRead(tast_2) == LOW && tast_2_alt == HIGH){
-    driveAction = driveAction + 1;
-    tast_2_alt = LOW;
-  }else if (digitalRead(tast_2) == HIGH && tast_2_alt == LOW){
-    tast_2_alt = HIGH;
-  }*/
-
 //Fahren
   switch (driveAction) {
     case 0:
@@ -119,8 +104,6 @@ void loop() {
     break;
   }
 
-
-
 //Fahrtenspeicher Begrenzer
   if (driveStorage < 0) {
     driveStorage = 0;
@@ -134,14 +117,7 @@ void loop() {
   }else if (driveAction > 6){
     driveAction = 6;
   }
-
-
-  
-
-//Sonstiges
-  Serial.println(driveStorage);
 }
-
 
 void driveStorageWriter(){
   switch (driveDir){
@@ -153,61 +129,6 @@ void driveStorageWriter(){
     break;
   }
 }
-
-
-//DRIVING
-void stop (){
-  motorDriver(0);
-}
-
-void starting (){
-  lightControll();
-  musicStart(speakerPin);
-  for (int i = 0; i < spedSlow; i++){
-    motorDriver(i);
-    delay(spedAdd);
-  }
-  driveAction = driveAction + 2;
-}
-
-void stoping(){
-  for (int i = spedSlow; i > 0; i--){
-    motorDriver(i);
-    delay(spedSubt);
-  }
-  musicStop(speakerPin);
-  driveAction = driveAction - 2;
-}
-
-void slow(){
-  motorDriver(spedSlow);
-  readSensorSlow();
-  readSensorFast();
-}
-
-void faster (){
-  for (int i = spedSlow; i < spedFast; i++){
-    motorDriver(i);
-    delay(spedAdd);
-  }
-  driveStorageWriter();
-  driveAction = driveAction + 2;
-}
-
-void slower (){
-  for (int i = spedFast; i > spedSlow; i--){
-    motorDriver(i);
-    delay(spedSubt);
-  }
-  driveStorageWriter();
-  driveAction = driveAction - 2;
-}
-
-void fast (){
-  motorDriver(spedFast);
-  readSensorSlow();
-}
-//<Driving
 
 void start (bool dir){
   if (driveAction == 0){
@@ -254,6 +175,104 @@ void lightControll(){
   }
 }
 
+//Driving
+void stop (){
+    motorDriver(0);
+}
+
+void starting (){
+    lightControll();
+    musicStart(speakerPin);
+    for (int i = 0; i < spedSlow; i++){
+        motorDriver(i);
+        delay(spedAdd);
+    }
+    driveAction = driveAction + 2;
+}
+
+void stoping(){
+    for (int i = spedSlow; i > 0; i--){
+        motorDriver(i);
+        delay(spedSubt);
+    }
+    musicStop(speakerPin);
+    driveAction = driveAction - 2;
+}
+
+void slow(){
+    motorDriver(spedSlow);
+    readSensorSlow();
+    readSensorFast();
+}
+
+void faster (){
+    for (int i = spedSlow; i < spedFast; i++){
+        motorDriver(i);
+        delay(spedAdd);
+    }
+    driveStorageWriter();
+    driveAction = driveAction + 2;
+}
+
+void slower (){
+    for (int i = spedFast; i > spedSlow; i--){
+        motorDriver(i);
+        delay(spedSubt);
+    }
+    driveStorageWriter();
+    driveAction = driveAction - 2;
+}
+
+void fast (){
+    motorDriver(spedFast);
+    readSensorSlow();
+}
+
+//Sensoren
+void readSensorSlow(){
+    switch (driveDir){
+        case 0:
+            if (readSensor(slowFrontPin) = true){
+                driveAction - 1;
+                
+            
+        break;
+        case 1:
+            if (readSensor(slowBackPin) = true){
+                driveAction - 1;
+                
+            }
+        break;
+    }
+}
+
+void readSensorFast(){
+    switch (driveDir){
+        case 0:
+            if (readSensor(fastFrontPin) = true){
+                driveAction + 1;
+                
+            }
+        break;
+        case 1:
+            if (readSensor(fastBackPin) = true){
+                driveAction + 1;
+                
+            }
+        break;
+    }
+}
+
+///Frequenzmesser
+bool readSensor (int pin){
+    float freq_in = (float)1000/( (float)pulseIn(pin, HIGH,5000) / (float)500);
+    if (freq_in < freq_max && freq_in > freq_min){
+        return true;
+    }else {
+        return false;
+    }
+}
+
 
 //WIFI
 IPAddress eitech01(192,168,1,11);
@@ -265,9 +284,6 @@ IPAddress eitech06(192,168,1,16);
 IPAddress eitech07(192,168,1,17);
 IPAddress eitech08(192,168,1,18);
 
-void tastersent(String msg){
-  SendRequestToOther(msg, eitech08);
-}
 
 void Commands(String first,String second, String third, String forth, String fith){
   if (first == "faster"){
@@ -280,12 +296,10 @@ void Commands(String first,String second, String third, String forth, String fit
     driveAction = 0;
   }
   if (first == "start-pumpkraft"){
-    driveAction = 1;
-    driveDir = 1;
+    start(1);
   }
   if (first == "start-rennstrecke"){
-    driveAction = 1;
-    driveDir = 0;
+    start(0);
   }
 }
 
