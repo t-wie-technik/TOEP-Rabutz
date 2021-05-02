@@ -108,12 +108,12 @@ bool startWifi(char *ssid, char *password, bool isAP)
   else
   {*/
     // connect to WPA/WPA2 network
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(ssid);
+    //Serial.print("Attempting to connect to SSID: ");
+    //Serial.println(ssid);
     status = WiFi.begin(ssid, password);
     if(status != WL_CONNECTED)
     {
-      Serial.println("Connecting failed");
+      //Serial.println("Connecting failed");
       return false; // return error
     }
   //}
@@ -123,19 +123,19 @@ bool startWifi(char *ssid, char *password, bool isAP)
 void printWifiStatus() 
 {
   // print the SSID of the network you're attached to:
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
+  //Serial.print("SSID: ");
+  //Serial.println(WiFi.SSID());
 
   // print your WiFi shield's IP address:
   IPAddress ip = WiFi.localIP();
-  Serial.print("IP Address: ");
-  Serial.println(ip);
+  //Serial.print("IP Address: ");
+  //Serial.println(ip);
 
   // print the received signal strength:
   long rssi = WiFi.RSSI();
-  Serial.print("signal strength (RSSI):");
-  Serial.print(rssi);
-  Serial.println(" dBm");
+  //Serial.print("signal strength (RSSI):");
+  //Serial.print(rssi);
+  //Serial.println(" dBm");
 }
 
 void httpSendHeader(WiFiClient &client, int content_type)
@@ -266,7 +266,7 @@ void UpdateWiFiHandler() {
         }
         if(c == '\n' && currentLineIsBlank) 
         {
-          Serial.println(httpRequest);
+          //Serial.println(httpRequest);
           if (httpSplitRequest(httpRequest, httpRequestLen)) {
             lastReq = millis();
 

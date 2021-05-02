@@ -9,7 +9,7 @@
     4 = light/dir
     5 = driveaction
   */
-  #define debug 0
+  //#define debug 0
 //PIN Mode
   //Input 
   //J1=15 J2=25 J3=18 J4=19 J5=20 J6=21 J7=16
@@ -17,8 +17,8 @@
   // Rechts schneller  Links langsamer
   #define slowFrontPin 16  //Sensor Front Links
   #define fastFrontPin 21  //Sensor Front Rechts
-  #define slowBackPin 20   //Sensor Back  Links
-  #define fastBackPin 19   //Sensor Back  Rechts
+  #define slowBackPin 19   //Sensor Back  Links
+  #define fastBackPin 20   //Sensor Back  Rechts
   //HIGH = nicht gedrückt / LOW = gedrückt
 
 #define freq 400
@@ -58,7 +58,7 @@ int dip;
 
 void setup() {
 // Serial
-  Serial.begin(9600);
+  ////Serial.begin(9600);
 
   //WIFI
   SetupWiFi();
@@ -117,6 +117,15 @@ void loop() {
   }else if (driveAction > 6){
     driveAction = 6;
   }
+
+  /*Serial.print("VR__");
+      Serial.print((float)1000/( (float)pulseIn(fastFrontPin, HIGH,5000) / (float)500));
+      Serial.print("  VL__");
+      Serial.print((float)1000/( (float)pulseIn(slowFrontPin, HIGH,5000) / (float)500));
+      Serial.print("  HL__");
+      Serial.print((float)1000/( (float)pulseIn(slowBackPin, HIGH,5000) / (float)500));
+      Serial.print("  HR__");
+      Serial.println((float)1000/( (float)pulseIn(fastBackPin, HIGH,5000) / (float)500));*/
 }
 
 void driveStorageWriter(){
@@ -232,14 +241,14 @@ void fast (){
 void readSensorSlow(){
     switch (driveDir){
         case 0:
-            if (readSensor(slowFrontPin) == true){
-                driveAction - 1;
+            if (readSensor(slowBackPin) == true){
+                driveAction = driveAction - 1;
                 
             }
         break;
         case 1:
-            if (readSensor(slowBackPin) == true){
-                driveAction - 1;
+            if (readSensor(slowFrontPin) == true){
+                driveAction = driveAction - 1;
                 
             }
         break;
@@ -249,14 +258,14 @@ void readSensorSlow(){
 void readSensorFast(){
     switch (driveDir){
         case 0:
-            if (readSensor(fastFrontPin) == true){
-                driveAction + 1;
+            if (readSensor(fastBackPin) == true){
+                driveAction = driveAction + 1;
                 
             }
         break;
         case 1:
-            if (readSensor(fastBackPin) == true){
-                driveAction + 1;
+            if (readSensor(fastFrontPin) == true){
+                driveAction = driveAction + 1;
                 
             }
         break;
@@ -266,6 +275,9 @@ void readSensorFast(){
 ///Frequenzmesser
 bool readSensor (int pin){
     float freq_in = (float)1000/( (float)pulseIn(pin, HIGH,5000) / (float)500);
+    /*Serial.print(pin);
+    Serial.print("__");
+    Serial.println(freq_in);*/
     if (freq_in < freq_max && freq_in > freq_min){
         return true;
     }else {
