@@ -13,7 +13,7 @@
 //PIN Mode
   //Input 
   //J1=15 J2=25 J3=18 J4=19 J5=20 J6=21 J7=16
-  #define dipSwitchPin A0  //Start Position
+  #define dipSwitchPin 25  //Start Position
   // Rechts schneller  Links langsamer
   #define slowFrontPin 16  //Sensor Front Links
   #define fastFrontPin 21  //Sensor Front Rechts
@@ -53,12 +53,12 @@ int driveAction = 0; //Fahrbefehl |0    |1       |2      |3       |4         |5 
                                 //|STOP |Starten |Stopen |Langsam |Schneller |Langsamer |Schnell
 int driveDir = 1;        //Fahrtrichtung (0=Richtung Rennstrecke) (1=Richtung Pumpkraftwerk)
 int driveStorage;    //Fahrtenspeicher |0       |1          |2        |3          |4        |5          |6 
-                                     //|Garten  |Verbinder  |Bahnhof  |Verbinder  |Bahnwerk |Verbinder  |Rennstrecke
+                                         //|Garten  |Verbinder  |Siedlung |Verbinder  |Bahnwerk |Verbinder  |Rennstrecke
 int dip;
 
 void setup() {
 // Serial
-  ////Serial.begin(9600);
+  Serial.begin(9600);
 
   //WIFI
   SetupWiFi();
@@ -117,24 +117,17 @@ void loop() {
   }else if (driveAction > 6){
     driveAction = 6;
   }
-
-  /*Serial.print("VR__");
-      Serial.print((float)1000/( (float)pulseIn(fastFrontPin, HIGH,5000) / (float)500));
-      Serial.print("  VL__");
-      Serial.print((float)1000/( (float)pulseIn(slowFrontPin, HIGH,5000) / (float)500));
-      Serial.print("  HL__");
-      Serial.print((float)1000/( (float)pulseIn(slowBackPin, HIGH,5000) / (float)500));
-      Serial.print("  HR__");
-      Serial.println((float)1000/( (float)pulseIn(fastBackPin, HIGH,5000) / (float)500));*/
+Serial.println(driveStorage);
+  
 }
 
 void driveStorageWriter(){
   switch (driveDir){
     case 0:
-      driveStorage = driveStorage - 1;
+      driveStorage = driveStorage + 1;
     break;
     case 1:
-      driveStorage = driveStorage + 1;
+      driveStorage = driveStorage - 1;
     break;
   }
 }
@@ -169,6 +162,7 @@ void dipSwitchRead (){
   }else if (dip > 124 && dip < 135){
     driveStorage = 6;
   }
+  
 }
 
 void lightControll(){
@@ -196,6 +190,7 @@ void starting (){
         motorDriver(i);
         delay(spedAdd);
     }
+    
     driveAction = driveAction + 2;
 }
 
@@ -295,24 +290,88 @@ IPAddress eitech05(192,168,1,15);
 IPAddress eitech06(192,168,1,16);
 IPAddress eitech07(192,168,1,17);
 IPAddress eitech08(192,168,1,18);
+IPAddress eitech09(192,168,1,19);
 
 
 void Commands(String first,String second, String third, String forth, String fith){
-  if (first == "faster"){
+  if (first == "web"){
+
+    if (second == "faster"){
+      driveAction = driveAction + 1;
+    }
+    if (second == "slower"){
+      driveAction = driveAction - 1;
+    }
+    if (second == "stop"){
+      driveAction = 0;
+    }
+    if (second == "start-pumpkraft"){
+      start(1);
+      
+    }
+    if (second == "start-rennstrecke"){
+      start(0);
+    }
+    
+  }
+  else if (first == "siedlung" && driveStorage == 2){
+
+    if (second == "faster"){
     driveAction = driveAction + 1;
+    }
+    if (second == "slower"){
+      driveAction = driveAction - 1;
+    }
+    if (second == "stop"){
+      driveAction = 0;
+    }
+    if (second == "start-pumpkraft"){
+      start(1);
+    }
+    if (second == "start-rennstrecke"){
+      start(0);
+    }
+    
   }
-  if (first == "slower"){
-    driveAction = driveAction - 1;
+  else if (first == "bahnwerk" && driveStorage == 4){
+
+    if (second == "faster"){
+    driveAction = driveAction + 1;
+    }
+    if (second == "slower"){
+      driveAction = driveAction - 1;
+    }
+    if (second == "stop"){
+      driveAction = 0;
+    }
+    if (second == "start-pumpkraft"){
+      start(1);
+    }
+    if (second == "start-rennstrecke"){
+      start(0);
+    }
+    
   }
-  if (first == "stop"){
-    driveAction = 0;
+  else if (first == "rennstrecke" && driveStorage == 6){
+
+    if (second == "faster"){
+    driveAction = driveAction + 1;
+    }
+    if (second == "slower"){
+      driveAction = driveAction - 1;
+    }
+    if (second == "stop"){
+      driveAction = 0;
+    }
+    if (second == "start-pumpkraft"){
+      start(1);
+    }
+    if (second == "start-rennstrecke"){
+      start(0);
+    }
+  
   }
-  if (first == "start-pumpkraft"){
-    start(1);
-  }
-  if (first == "start-rennstrecke"){
-    start(0);
-  }
+ 
   
 }
 

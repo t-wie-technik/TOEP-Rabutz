@@ -27,17 +27,32 @@ unsigned long lastReq;
 
 const String index_html_text[] = 
     {"<!DOCTYPE html>",
-    "<html>",
-    "<head>",
-    "<meta charset='utf-8'>",
-    "<title>Roboter Control Panel</title>",
-    "</head>",
-    "<body>",
-    "Das is 1 toller test<br/>",
-    "<a href='/debug'> Start</a><br/>",
-    "<a href='/toOtherDebug'>A-A test</a>",
-    "</body>",
-    "</html>"};
+  "<html>",
+      "<head>",
+          "<meta charset='utf-8'>",
+          "<title>V36 Controller</title>",
+          "<style>",
+              "body {font-family: Arial, Helvetica, sans-serif;}",
+              "body {background-color: rgb(156, 157, 199);}",
+              "header {background-color: rgb(83, 172, 87);}",
+              ".button {padding: 0.5cm ; font-size: large; margin-left: 10%; width: 80%;}",
+              ".stop {padding: 0.5cm ; font-size: large; margin-left: 10%; width: 80%; background-color: rgb(255, 0, 0); padding-color}",
+              ".head {text-align: center;}",
+          "</style>",
+      "</head>",
+      //"<header class=head>",
+          "<h2>V36 Steuereinheit</h2>",
+          "<h4>Die Bahn ist ein Projekt des Technich Ökologischen Projektzentrum Rabutz.</h4><br/>",
+      "</header>",
+      "<body>",
+          "<br/>",
+          "<a href='/web/start-pumpkraft'><button class=button>Start in Richtung Pumpspeicherkraftwerk</button></a><br/><br/>",
+          "<a href='/web/start-rennstrecke'><button  class=button>Start in Richtung Rennstrecke</button></a><br/><br/>",
+          "<a href='/web/faster'><button class=button>Schneller Fahren</button></a><br/><br/>",
+          "<a href='/web/slower'><button class=button>Langsamer Fahren</button></a><br/><br/>",
+          "<a href='/web/stop'><button class=stop>STOP</button></a><br/><br/>",
+      "</body>",
+  "</html>"};
 
 void Commands(String first,String second, String third, String forth, String fith);
 /*
@@ -168,9 +183,9 @@ bool httpSplitRequest(char *httpRequest, size_t len)
       if(!strncmp(reqpart[1], "HTTP/1.0", 8) || \
          !strncmp(reqpart[1], "HTTP/1.1", 8))
       {
-        //Serial.println(reqpart[0]);
-        //Serial.println(reqpart[1]);
-        //Serial.println(httpRequestURL);
+        Serial.println(reqpart[0]);
+        Serial.println(reqpart[1]);
+        Serial.println(httpRequestURL);
         return true;      
       }
     }

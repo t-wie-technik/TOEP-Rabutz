@@ -46,11 +46,11 @@ const String index_html_text[] =
       "</header>",
       "<body>",
           "<br/>",
-          "<a href='/start-pumpkraft'><button class=button>Start in Richtung Pumpspeicherkraftwerk</button></a><br/><br/>",
-          "<a href='/start-rennstrecke'><button  class=button>Start in Richtung Rennstrecke</button></a><br/><br/>",
-          "<a href='/faster'><button class=button>Schneller Fahren</button></a><br/><br/>",
-          "<a href='/slower'><button class=button>Langsamer Fahren</button></a><br/><br/>",
-          "<a href='/stop'><button class=stop>STOP</button></a><br/><br/>",
+          "<a href='/web/start-pumpkraft'><button class=button>Start in Richtung Pumpspeicherkraftwerk</button></a><br/><br/>",
+          "<a href='/web/start-rennstrecke'><button  class=button>Start in Richtung Rennstrecke</button></a><br/><br/>",
+          "<a href='/web/faster'><button class=button>Schneller Fahren</button></a><br/><br/>",
+          "<a href='/web/slower'><button class=button>Langsamer Fahren</button></a><br/><br/>",
+          "<a href='/web/stop'><button class=stop>STOP</button></a><br/><br/>",
       "</body>",
   "</html>"};
 
@@ -108,12 +108,12 @@ bool startWifi(char *ssid, char *password, bool isAP)
   else
   {*/
     // connect to WPA/WPA2 network
-    //Serial.print("Attempting to connect to SSID: ");
-    //Serial.println(ssid);
+    Serial.print("Attempting to connect to SSID: ");
+    Serial.println(ssid);
     status = WiFi.begin(ssid, password);
     if(status != WL_CONNECTED)
     {
-      //Serial.println("Connecting failed");
+      Serial.println("Connecting failed");
       return false; // return error
     }
   //}
@@ -123,19 +123,19 @@ bool startWifi(char *ssid, char *password, bool isAP)
 void printWifiStatus() 
 {
   // print the SSID of the network you're attached to:
-  //Serial.print("SSID: ");
-  //Serial.println(WiFi.SSID());
+  Serial.print("SSID: ");
+  Serial.println(WiFi.SSID());
 
   // print your WiFi shield's IP address:
   IPAddress ip = WiFi.localIP();
-  //Serial.print("IP Address: ");
-  //Serial.println(ip);
+  Serial.print("IP Address: ");
+  Serial.println(ip);
 
   // print the received signal strength:
   long rssi = WiFi.RSSI();
-  //Serial.print("signal strength (RSSI):");
-  //Serial.print(rssi);
-  //Serial.println(" dBm");
+  Serial.print("signal strength (RSSI):");
+  Serial.print(rssi);
+  Serial.println(" dBm");
 }
 
 void httpSendHeader(WiFiClient &client, int content_type)
@@ -183,9 +183,9 @@ bool httpSplitRequest(char *httpRequest, size_t len)
       if(!strncmp(reqpart[1], "HTTP/1.0", 8) || \
          !strncmp(reqpart[1], "HTTP/1.1", 8))
       {
-        //Serial.println(reqpart[0]);
-        //Serial.println(reqpart[1]);
-        //Serial.println(httpRequestURL);
+        Serial.println(reqpart[0]);
+        Serial.println(reqpart[1]);
+        Serial.println(httpRequestURL);
         return true;      
       }
     }
@@ -266,7 +266,7 @@ void UpdateWiFiHandler() {
         }
         if(c == '\n' && currentLineIsBlank) 
         {
-          //Serial.println(httpRequest);
+          Serial.println(httpRequest);
           if (httpSplitRequest(httpRequest, httpRequestLen)) {
             lastReq = millis();
 
