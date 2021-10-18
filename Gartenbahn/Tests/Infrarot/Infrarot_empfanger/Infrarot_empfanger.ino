@@ -2,7 +2,7 @@
 #define hintenRechts 20
 #define vorneLinks 21
 #define vorneRechts 16
-#define status 1
+#define status 0
 
 int   pinInput[]        = {15,25,19,20,21,16};
 

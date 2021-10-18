@@ -24,6 +24,8 @@
 #define freq 400
 #define freq_min 300
 #define freq_max 500
+#define freq_time_min 1700
+#define freq_time_max 1000
 #define zeit 200
 #define tast_1 20
 #define tast_2 21
@@ -55,6 +57,7 @@ int driveDir = 1;        //Fahrtrichtung (0=Richtung Rennstrecke) (1=Richtung Pu
 int driveStorage;    //Fahrtenspeicher |0       |1          |2        |3          |4        |5          |6 
                                          //|Garten  |Verbinder  |Siedlung |Verbinder  |Bahnwerk |Verbinder  |Rennstrecke
 int dip;
+int sensorData[5];
 
 void setup() {
 // Serial
@@ -117,7 +120,7 @@ void loop() {
   }else if (driveAction > 6){
     driveAction = 6;
   }
-Serial.println(driveStorage);
+//Serial.println(driveStorage);
   
 }
 
@@ -270,14 +273,20 @@ void readSensorFast(){
 ///Frequenzmesser
 bool readSensor (int pin){
     float freq_in = (float)1000/( (float)pulseIn(pin, HIGH,5000) / (float)500);
+    float freq_in = (float)pulseIn(pin, HIGH,5000);
+    
     /*Serial.print(pin);
     Serial.print("__");
     Serial.println(freq_in);*/
-    if (freq_in < freq_max && freq_in > freq_min){
-        return true;
+    if (freq_in < freq_time_max && freq_in > freq_time_min){
+      for (int i=0;i<6;i++){
+        
+      }
+        sensorData[]
     }else {
         return false;
     }
+    
 }
 
 
