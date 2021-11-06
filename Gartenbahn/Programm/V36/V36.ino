@@ -120,7 +120,7 @@ void loop() {
   }else if (driveAction > 6){
     driveAction = 6;
   }
-//Serial.println(driveStorage);
+Serial.println(driveAction);
   
 }
 
@@ -272,22 +272,39 @@ void readSensorFast(){
 
 ///Frequenzmesser
 bool readSensor (int pin){
-    float freq_in = (float)1000/( (float)pulseIn(pin, HIGH,5000) / (float)500);
-    float freq_in = (float)pulseIn(pin, HIGH,5000);
+  //float freq_in = (float)1000/( (float)pulseIn(pin, HIGH,5000) / (float)500);
+  float freq_in = (float)pulseIn(pin, HIGH,5000);
     
-    /*Serial.print(pin);
+    
+  if (freq_in < freq_time_max && freq_in > freq_time_min){
+    /*float freq_in = (float)pulseIn(pin, HIGH,5000);
+    if (freq_in < freq_time_max && freq_in > freq_time_min){
+      float freq_in = (float)pulseIn(pin, HIGH,5000);
+      if (freq_in < freq_time_max && freq_in > freq_time_min){
+        float freq_in = (float)pulseIn(pin, HIGH,5000);
+        if (freq_in < freq_time_max && freq_in > freq_time_min){
+          return true;
+        }else {
+          return false;
+        }
+      }else {
+        return false;
+      }
+    }else {
+      return false;
+    }*/return true;
+  }else {
+    return false;
+  }
+
+}
+/*for (int i=0;i<6;i+1){
+        sensorData[i] = (float)pulseIn(pin, HIGH,5000);
+      }*/
+
+/*Serial.print(pin);
     Serial.print("__");
     Serial.println(freq_in);*/
-    if (freq_in < freq_time_max && freq_in > freq_time_min){
-      for (int i=0;i<6;i++){
-        
-      }
-        sensorData[]
-    }else {
-        return false;
-    }
-    
-}
 
 
 //WIFI
@@ -302,7 +319,7 @@ IPAddress eitech08(192,168,1,18);
 IPAddress eitech09(192,168,1,19);
 
 
-void Commands(String first,String second, String third, String forth, String fith){
+void Commands (String first, String second, String third, String forth, String fith){
   if (first == "web"){
 
     if (second == "faster"){
@@ -322,8 +339,7 @@ void Commands(String first,String second, String third, String forth, String fit
       start(0);
     }
     
-  }
-  else if (first == "siedlung" && driveStorage == 2){
+  }else if (first == "siedlung" && driveStorage == 2){
 
     if (second == "faster"){
     driveAction = driveAction + 1;
@@ -341,8 +357,7 @@ void Commands(String first,String second, String third, String forth, String fit
       start(0);
     }
     
-  }
-  else if (first == "bahnwerk" && driveStorage == 4){
+  }else if (first == "bahnwerk" && driveStorage == 4){
 
     if (second == "faster"){
     driveAction = driveAction + 1;
@@ -360,8 +375,7 @@ void Commands(String first,String second, String third, String forth, String fit
       start(0);
     }
     
-  }
-  else if (first == "rennstrecke" && driveStorage == 6){
+  }else if (first == "rennstrecke" && driveStorage == 6){
 
     if (second == "faster"){
     driveAction = driveAction + 1;
@@ -380,8 +394,6 @@ void Commands(String first,String second, String third, String forth, String fit
     }
   
   }
- 
-  
 }
 
 /*switch (debug) {
