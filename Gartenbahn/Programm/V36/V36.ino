@@ -26,6 +26,9 @@
 #define freq_max 500
 #define freq_time_min 1700
 #define freq_time_max 1000
+#define readSensorTurns 5
+#define sensorCountMin 3
+int sensorCount = 0;
 #define zeit 200
 #define tast_1 20
 #define tast_2 21
@@ -58,6 +61,8 @@ int driveStorage;    //Fahrtenspeicher |0       |1          |2        |3        
                                          //|Garten  |Verbinder  |Siedlung |Verbinder  |Bahnwerk |Verbinder  |Rennstrecke
 int dip;
 int sensorData[5];
+float freq_in[readSensorTurns];
+bool sensorControll[readSensorTurns];
 
 void setup() {
 // Serial
@@ -273,30 +278,26 @@ void readSensorFast(){
 ///Frequenzmesser
 bool readSensor (int pin){
   //float freq_in = (float)1000/( (float)pulseIn(pin, HIGH,5000) / (float)500);
-  float freq_in = (float)pulseIn(pin, HIGH,5000);
-    
-    
-  if (freq_in < freq_time_max && freq_in > freq_time_min){
-    /*float freq_in = (float)pulseIn(pin, HIGH,5000);
-    if (freq_in < freq_time_max && freq_in > freq_time_min){
-      float freq_in = (float)pulseIn(pin, HIGH,5000);
-      if (freq_in < freq_time_max && freq_in > freq_time_min){
-        float freq_in = (float)pulseIn(pin, HIGH,5000);
-        if (freq_in < freq_time_max && freq_in > freq_time_min){
-          return true;
-        }else {
-          return false;
-        }
-      }else {
-        return false;
-      }
-    }else {
-      return false;
-    }*/return true;
+  sensorCount = 0;
+  for(int i = 0; i < readSensorTurns; i++){
+    freq_in[i]= (float)pulseIn(pin, HIGH,5000);
+  }
+  for(int i = 0; i < readSensorTurns; i++){
+    if (freq_in[i] < freq_time_max && freq_in[i] > freq_time_min){
+      sensorControll[i] = true;
+      sensorCount = sensorCount + 1;
+    }else{
+      sensorControll[i] = false;
+      sensorCount = sensorCount - 1;
+    }
+  }
+
+  if (sensorCount >= sensorCountMin){
+    return true;
   }else {
     return false;
   }
-
+  
 }
 /*for (int i=0;i<6;i+1){
         sensorData[i] = (float)pulseIn(pin, HIGH,5000);
